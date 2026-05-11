@@ -1,0 +1,24 @@
+[build-system]
+requires = ["uv_build>=0.4.0"]
+build-backend = "uv_build"
+
+[project]
+name = "pykes_well_app"
+version = "0.1.0"
+description = "Python package for well-based experiment analysis."
+authors = [
+    {name = "Jacob Schneidewind", email = "pyH2A.pypi@gmail.com"},
+]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "numpy>=1.24.4",
+    "pandas>=2.0.3",
+    "pykes>=0.1.2",
+    "scipy>=1.10.1",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/jschneidewind/pykes_well_app"
+"Bug Tracker" = "https://github.com/jschneidewind/pykes_well_app"
