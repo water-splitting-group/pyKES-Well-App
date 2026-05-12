@@ -1,7 +1,7 @@
 # pyKES Well App
 
 This repository packages a Streamlit workflow built on top of `pyKES` for well-based experiment analysis. It provides scaffolding for ingesting experiment metadata plus raw sensor files, processing the time series, and visualizing the resulting dataset.
-
+ 
 ## What It Does
 
 The app provides three main steps:
