@@ -17,6 +17,7 @@ dependencies = [
     "pandas>=2.0.3",
     "pykes>=0.1.2",
     "scipy>=1.10.1",
+    "pyrotoolbox>=1.12b0"
 ]
 
 [project.urls]
