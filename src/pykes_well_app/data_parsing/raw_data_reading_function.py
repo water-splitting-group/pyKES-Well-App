@@ -419,9 +419,6 @@ def process_oxygen_data(directory, metadata_dict, well_mapping_file="data/well_m
     # === 6. Parse the experimental data rows ===
     df = _parse_experimental_data(lines, header_cols, columns)
 
-    df.index = pd.to_datetime(df["date"] + " " + df["time"], dayfirst=True, errors="coerce")
-    df.index.name = "date_time"
-
     for col in ("dt", "optical_temperature", "dphi"):
         df[col] = pd.to_numeric(df[col], errors="coerce")
 
