@@ -3072,7 +3072,7 @@ wheels = [
 
 [[package]]
 name = "pykes"
-version = "0.1.2"
+version = "0.1.6"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "h5py", version = "3.11.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.9'" },
@@ -3098,9 +3098,9 @@ dependencies = [
     { name = "streamlit", version = "1.50.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.9.*'" },
     { name = "streamlit", version = "1.57.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/bc/38/a9bb0f05438dfb46cf04fd4025c3aaa7df7aa9ca7ee73a011e2357b68a0a/pykes-0.1.2.tar.gz", hash = "sha256:07a158e5ed7656e4d7623f330431bfab994acac079b100356f71ff32b1fd8622", size = 61388, upload-time = "2026-05-11T14:00:53.337Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/f7/20/7c162a89cba01b842dd6a01a2d716e348cc54ed013616356efde6c547163/pykes-0.1.6.tar.gz", hash = "sha256:4eb28103bd749d44df421dae59488a36936a44b4ddd4abdd12636008688947a7", size = 85583, upload-time = "2026-08-27T14:33:22.861Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/3d/9b/92dd1d8da1e87f9fae85585956a85dd5b33d84e3a7188e336b3d165588d1/pykes-0.1.2-py3-none-any.whl", hash = "sha256:341e3c1e35ae355767046f585be06023919a3bbaac120da52df5059f9a91f50d", size = 73412, upload-time = "2026-05-11T14:00:51.963Z" },
+    { url = "https://files.pythonhosted.org/packages/e5/92/54b7c61d7e9ea96362b88635b0b1c5097f16fd7450cea06a8acd3d36f47b/pykes-0.1.6-py3-none-any.whl", hash = "sha256:b37395375f016fc40e6f8a50e0b4d7819b6c2f295bccc925cbc4839947e08e07", size = 100157, upload-time = "2026-08-27T14:33:21.869Z" },
 ]
 
 [[package]]
@@ -3126,7 +3126,7 @@ dependencies = [
 requires-dist = [
     { name = "numpy", specifier = ">=1.24.4" },
     { name = "pandas", specifier = ">=2.0.3" },
-    { name = "pykes", specifier = ">=0.1.2" },
+    { name = "pykes", specifier = ">=0.1.6" },
     { name = "scipy", specifier = ">=1.10.1" },
 ]
 
