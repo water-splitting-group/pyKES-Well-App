@@ -58,7 +58,10 @@ DATA_UPLOAD_CONFIG = DataUploadConfig(
     external_version=EXTERNAL_VERSION,
 )
 
-HOME_CONFIG = HomeConfig()
+HOME_CONFIG = HomeConfig(
+    page_title = "pyKES HTE Well Plate Analysis",
+    main_title = "pyKES HTE Well Plate Analysis",
+)
 
 # -----------------------------------------------------------------------------
 # Top-level app configuration
