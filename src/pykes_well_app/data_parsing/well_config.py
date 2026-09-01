@@ -78,30 +78,3 @@ def well_position(fireplate_well: str) -> tuple[int, int]:
         Zero-based row index and one-based column number.
     """
     return ord(fireplate_well[0]) - ord('A'), int(fireplate_well[1:])
-
-
-def nearest_well(fireplate_well: str, candidates: list[str]) -> str:
-    """Pick the candidate well physically closest to a given well.
-
-    A FirePlate carries several optical temperature sensors; the one nearest to the
-    oxygen well is the best estimate of that well's temperature.
-
-    Parameters
-    ----------
-    fireplate_well
-        Well whose neighbour is sought.
-    candidates
-        Well names to choose from.
-
-    Returns
-    -------
-    str
-        The closest candidate well name.
-    """
-    row, column = well_position(fireplate_well)
-
-    def squared_distance(candidate: str) -> float:
-        candidate_row, candidate_column = well_position(candidate)
-        return (candidate_row - row) ** 2 + (candidate_column - column) ** 2
-
-    return min(candidates, key=squared_distance)

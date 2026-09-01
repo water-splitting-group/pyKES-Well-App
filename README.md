@@ -12,8 +12,8 @@ The app provides three main steps:
 
 ## Requirements
 
-- Python 3.8 or newer
-- `pyKES>=0.1.6`
+- Python 3.9 or newer
+- `pyKES>=0.1.7`
 - `numpy>=1.24.4`
 - `pandas>=2.0.3`
 - `scipy>=1.10.1`
