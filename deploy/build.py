@@ -1,9 +1,10 @@
 """Generate deploy/files.js from the app source tree.
 
-Reads the Streamlit entrypoint, pages, and importable `pykes_well_app` package
-modules and emits a JS module exporting them as a mapping from virtual-FS paths
-to file contents, alongside the requirement list stlite installs in the browser.
-Both exports are consumed by deploy/index.html when stlite mounts the app.
+Reads the Streamlit entrypoint, pages, importable `pykes_well_app` package
+modules and `pyproject.toml`, and emits a JS module exporting them as a mapping
+from virtual-FS paths to file contents, alongside the requirement list stlite
+installs in the browser. Both exports are consumed by deploy/index.html when
+stlite mounts the app.
 """
 
 from __future__ import annotations
@@ -41,6 +42,14 @@ def collect_files() -> dict[str, str]:
     files: dict[str, str] = {}
 
     files["Home.py"] = (STREAMLIT_APP / "Home.py").read_text()
+
+    # pyKES stamps every dataset with this app's version, which
+    # `get_project_version` reads from the nearest pyproject.toml above the
+    # calling module. The browser filesystem holds only what is bundled here,
+    # so without this entry the provenance of a dataset created in the browser
+    # is recorded as null. It lands beside the `pykes_well_app` package, which
+    # is where the search from `config.py` looks.
+    files["pyproject.toml"] = PYPROJECT.read_text()
 
     for page in sorted((STREAMLIT_APP / "pages").glob("*.py")):
         if page.name == "__init__.py":

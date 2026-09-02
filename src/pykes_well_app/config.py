@@ -27,7 +27,7 @@ from pykes_well_app.parameters import (
 # traced back to the code that produced it. get_project_version reads the
 # version declared in this repository's own pyproject.toml.
 EXTERNAL_VERSION = {
-    "app": "external_repo_example",
+    "app": "pykes_well_app",
     "version": get_project_version(__file__),
 }
 
