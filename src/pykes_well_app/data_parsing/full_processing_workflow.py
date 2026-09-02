@@ -21,6 +21,36 @@ from pykes_well_app.data_parsing.raw_data_reading_functions import (find_column,
                                                                     read_measurement_table)
 from pykes_well_app.parameters import PROCESSING_PARAMETERS
 
+def find_conflicting_experiments(experiment_name: str, overview_df: pd.DataFrame) -> list[str]:
+    """Find other experiments that read the same well out of the same logfile.
+
+    A well can only be measured once per logfile, so two experiments sharing a
+    ('File name O2', 'Well') pair would be handed byte-identical raw data under
+    different names. In practice this means one of their 'File name O2' cells is a
+    typo — the failure is otherwise silent, since every plate carries all 24 wells
+    and the reader therefore succeeds.
+
+    Parameters
+    ----------
+    experiment_name
+        Experiment whose row is being read.
+    overview_df
+        Overview sheet holding one row per experiment.
+
+    Returns
+    -------
+    list of str
+        Names of the other experiments claiming the same well and logfile, sorted.
+    """
+    row = overview_df[overview_df['Experiment'] == experiment_name].iloc[0]
+
+    same_well_and_file = (overview_df['File name O2'].eq(row['File name O2'])
+                          & overview_df['Well'].eq(row['Well'])
+                          & overview_df['Experiment'].ne(experiment_name))
+
+    return sorted(overview_df.loc[same_well_and_file, 'Experiment'].astype(str))
+
+
 def metadata_retrival_function(experiment_name: str, overview_df: pd.DataFrame) -> dict:
     """Collect the metadata of one experiment from the overview sheet.
 
@@ -46,6 +76,17 @@ def metadata_retrival_function(experiment_name: str, overview_df: pd.DataFrame) 
     metadata_dict['experiment_name'] = experiment_name
     metadata_dict['fireplate_well'] = to_fireplate_well(metadata_dict['Well'])
     metadata_dict['raw_data_file'] = metadata_dict['File name O2']
+
+    # Both members of a conflicting pair fail: the sheet alone cannot say which of
+    # the two 'File name O2' cells is the wrong one.
+    conflicts = find_conflicting_experiments(experiment_name, overview_df)
+
+    if conflicts:
+        raise ValueError(f'{experiment_name} reads well {metadata_dict["Well"]} '
+                         f'(FirePlate {metadata_dict["fireplate_well"]}) from '
+                         f'{metadata_dict["raw_data_file"]}, but {", ".join(conflicts)} '
+                         f'already claims that well in that file. One of their '
+                         f'"File name O2" entries in the overview sheet is wrong.')
 
     return metadata_dict
 
@@ -172,6 +213,9 @@ def test_function():
     metadata_dict = metadata_retrival_function('AE-852_C2', overview_df)
     raw_data_dict = raw_data_reading_function(directory, metadata_dict)
     processed_data_dict = processing_function(raw_data_dict, metadata_dict)
+
+    import pprint as pp
+    pp.pprint(raw_data_dict)
 
     # print(f'experiment  : {metadata_dict["experiment_name"]}')
     # print(f'well        : {metadata_dict["Well"]} -> {metadata_dict["fireplate_well"]}')
