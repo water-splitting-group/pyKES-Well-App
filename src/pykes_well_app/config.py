@@ -5,7 +5,7 @@ from pyKES.streamlit_app.config_interface import (
     FileUploadHandler,
 )
 
-from pyKES.utilities.version_information import get_git_commit
+from pyKES.utilities.version_information import get_project_version
 
 from pykes_well_app.data_parsing.full_processing_workflow import (
     metadata_retrival_function,
@@ -24,12 +24,13 @@ from pykes_well_app.parameters import (
 # -----------------------------------------------------------------------------
 
 # Recorded in dataset.version['external_version'], so the processed data can be
-# traced back to the code that produced it. get_git_commit returns None outside
-# a git work tree (e.g. a deployment from a source archive).
+# traced back to the code that produced it. get_project_version reads the
+# version declared in this repository's own pyproject.toml.
 EXTERNAL_VERSION = {
-    "app": "pyKES-Well-App",
-    "commit": get_git_commit(__file__),
+    "app": "external_repo_example",
+    "version": get_project_version(__file__),
 }
+
 
 # -----------------------------------------------------------------------------
 # File Handler Config
