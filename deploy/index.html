@@ -21,18 +21,13 @@
     <div id="root"></div>
     <script type="module">
       import { mount } from "https://cdn.jsdelivr.net/npm/@stlite/browser@1.7.3/build/stlite.js";
-      import { files } from "./files.js";
+      import { files, requirements } from "./files.js";
 
       mount(
         {
           entrypoint: "Home.py",
           files,
-          requirements: [
-            "pyKES==0.2.0",
-            "numpy",
-            "pandas",
-            "scipy",
-          ],
+          requirements,
           streamlitConfig: { "browser.gatherUsageStats": false },
         },
         document.getElementById("root"),

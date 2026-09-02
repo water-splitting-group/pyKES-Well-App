@@ -50,6 +50,19 @@ python -m http.server 8000
 
 Then open `http://localhost:8000` in a browser.
 
+`build.py` writes both the app sources and the requirement list that stlite installs in
+the browser into `deploy/files.js`, so [`deploy/index.html`](deploy/index.html) holds no
+version numbers. The `pyKES` requirement is pinned to the version resolved in `uv.lock`;
+bumping it is therefore
+
+```bash
+uv lock --upgrade-package pykes
+```
+
+(raising the floor in [`pyproject.toml`](pyproject.toml) first if a newer release is
+needed). A pin left behind by hand used to make the deployed app fail on import of
+modules added in the meantime.
+
 ## Repository Layout
 
 - [`src/pykes_well_app/data_parsing/`](src/pykes_well_app/data_parsing/) contains the raw readers and signal-processing helpers.
