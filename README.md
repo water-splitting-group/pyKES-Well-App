@@ -13,7 +13,7 @@ The app provides three main steps:
 ## Requirements
 
 - Python 3.9 or newer
-- `pyKES>=0.2.0`
+- `pyKES>=0.2.4`
 - `numpy>=1.24.4`
 - `pandas>=2.0.3`
 - `scipy>=1.10.1`

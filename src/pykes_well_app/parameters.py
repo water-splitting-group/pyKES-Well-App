@@ -52,7 +52,10 @@ PLOTTING_INSTRUCTIONS = {
 
     'results_table_instructions': {
         'Max. rate (umol/s)': {'result': 'processed_data/max_rate_umol_s'},
-        'Max. rate crosscheck (umol/s)': {'result': 'processed_data/max_rate_crosscheck_umol_s',
-                                          'format': '.10f'},
+        'Max. rate crosscheck (umol/s)': {'result': 'processed_data/max_rate_crosscheck_umol_s'},
+        'Apparent quantum yield (%)': {'result': 'processed_data/apparent_quantum_yield',
+                                       'format': '.5f'},
+        'Light-to-hydrogen efficiency (%)': {'result': 'processed_data/light_to_hydrogen_efficiency',
+                                             'format': '.5f'},
     },
 }

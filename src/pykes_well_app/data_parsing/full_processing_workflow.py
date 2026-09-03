@@ -13,6 +13,7 @@ import pandas as pd
 from pyKES.utilities.unit_handler import Quantity
 from pyKES.utilities.max_rate import extract_max_rate
 from pyKES.utilities.offset_correction import offset_correction
+from pyKES.utilities.calculate_efficiency import light_to_hydrogen_efficiency
 
 from pykes_well_app.data_parsing.reprocessing_data import calculate_pO2_from_calibration, partial_pressure_to_micromolar, convert_umol_L_to_mol
 from pykes_well_app.data_parsing.well_config import to_fireplate_well
@@ -50,6 +51,51 @@ def find_conflicting_experiments(experiment_name: str, overview_df: pd.DataFrame
 
     return sorted(overview_df.loc[same_well_and_file, 'Experiment'].astype(str))
 
+def calculate_efficiency(metadata_dict: dict, 
+                         reaction_rate: Quantity,) -> Quantity:
+    '''
+    Calculate the apparent quantum yield and light-to-hydrogen efficiency 
+    based on the reaction rate and metadata from the overview sheet.
+
+    Parameters
+    ----------
+    metadata_dict : dict
+        Metadata of the experiment, as returned by the metadata retrieval function.
+    reaction_rate : Quantity
+        The reaction rate (Quantity, substance / time)
+
+    Returns
+    -------
+    apparent_quantum_yield : Quantity
+        The apparent quantum yield (Quantity, dimensionless)
+    lth_efficiency : Quantity
+        The light-to-hydrogen efficiency (Quantity, dimensionless)
+    '''
+
+    apparent_quantum_yield = Quantity(0, '-')
+    lth_efficiency = Quantity(0, '-')
+
+    total_irradiance = Quantity(metadata_dict['Irradiance A [mW/cm2]']
+                                + metadata_dict['Irradiance B [mW/cm2]'], 
+                                'mW/cm2')
+
+    if "Irradiated area [cm2]" in metadata_dict:
+        lth_efficiency = light_to_hydrogen_efficiency(
+                                        Quantity(metadata_dict['Irradiated area [cm2]'], 'cm2'),
+                                        total_irradiance,
+                                        reaction_rate,
+                                        electron_transfer_per_reaction = 4)
+
+    if "Irradiated area [cm2]" in metadata_dict and "Fraction of photons reaching inside [-]" in metadata_dict:
+        apparent_quantum_yield = apparent_quantum_yield(
+                                    Quantity(metadata_dict['Irradiation wavelength A [nm]'], 'nm'),
+                                    Quantity(metadata_dict['Irradiated area [cm2]'], 'cm2'),
+                                    Quantity(metadata_dict['Irradiance A [mW/cm2]'], 'mW/cm2'),
+                                    reaction_rate,
+                                    Quantity(metadata_dict['Fraction of photons reaching inside [-]'], '-'),
+                                    electron_transfer_per_reaction = 4)
+
+    return apparent_quantum_yield, lth_efficiency
 
 def metadata_retrival_function(experiment_name: str, overview_df: pd.DataFrame) -> dict:
     """Collect the metadata of one experiment from the overview sheet.
@@ -180,6 +226,9 @@ def processing_function(raw_data_dict: dict, metadata_dict: dict) -> dict:
     result = extract_max_rate(time_reaction_quantity, 
                               data_reaction_quantity)
 
+    apparent_quantum_yield, lth_efficiency = calculate_efficiency(metadata_dict, 
+                                                                  result.max_rate)
+
     processed_data_dict = {'pO2_hPa': partial_pressure,
                            'oxygen_umol_L': oxygen_umol_L,
                            'time_reaction_s': time_reaction_quantity.unit['s'],
@@ -196,6 +245,10 @@ def processing_function(raw_data_dict: dict, metadata_dict: dict) -> dict:
                            'max_rate_crosscheck_unit': 'umol/s',
                            'max_rate_time_s': result.t_max_rate.unit['s'],
                            'max_rate_time_unit': 's',
+                           'apparent_quantum_yield': apparent_quantum_yield.unit['%'],
+                           'apparent_quantum_yield_unit': '%',
+                           'light_to_hydrogen_efficiency': lth_efficiency.unit['%'],
+                           'light_to_hydrogen_efficiency_unit': '%',
                            }
 
     return processed_data_dict
@@ -254,5 +307,61 @@ def test_function():
 
     plt.show()
 
+def testing_temperature_compensation():
+    import numpy as np
+    import matplotlib.pyplot as plt
+
+    import pprint as pp
+
+
+    overview_df = pd.read_excel('Untracked/data/Temperature_Comp/260831_AE-860.xlsx')
+
+    metadata_dict = metadata_retrival_function('AE-860_C2', overview_df)
+    raw_data_dict = raw_data_reading_function('Untracked/data/Temperature_Comp', metadata_dict)
+
+
+    calibration = raw_data_dict['calibration']
+
+    # The plate's optical temperature sensors sit in different wells and read slightly
+    # differently; their average is the best estimate of the plate temperature.
+    temperature = raw_data_dict['compensation_temperatures'].mean(axis=0)
+
+    print(raw_data_dict['compensation_temperatures'][0][:10])
+    print(raw_data_dict['compensation_temperatures'][1][:10])
+
+
+
+    partial_pressure = calculate_pO2_from_calibration(raw_data_dict['dphi'], temperature, calibration)
+    oxygen_umol_L = partial_pressure_to_micromolar(partial_pressure, temperature, calibration['salinity'])
+
+
+
+    plt.plot(raw_data_dict['time_s'], raw_data_dict['oxygen_umol_L'], label = 'raw')
+    plt.plot(raw_data_dict['time_s'], oxygen_umol_L, label = 'reprocessed')
+
+    plt.legend()
+    plt.show()
+    
+
+    # metadata_dict = metadata_retrival_function('AE-852_C2', overview_df)
+    # raw_data_dict = raw_data_reading_function(directory, metadata_dict)
+    # processed_data_dict = processing_function(raw_data_dict, metadata_dict)
+
+def testing_efficiency():
+
+    overview_df = pd.read_excel('Untracked/data/BaysianOpt/260828_1st_run_edited.xlsx')
+
+    metadata_dict = metadata_retrival_function('AE-857_A2', overview_df)
+    raw_data_dict = raw_data_reading_function('Untracked/data/BaysianOpt', metadata_dict)
+    processed_data_dict = processing_function(raw_data_dict, metadata_dict)
+
+    print(processed_data_dict['light_to_hydrogen_efficiency'])
+
+
+
+
+
 if __name__ == '__main__':
-    test_function()
+    #test_function()
+    #testing_temperature_compensation()
+    testing_efficiency()

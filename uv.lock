@@ -2326,7 +2326,7 @@ wheels = [
 
 [[package]]
 name = "pykes"
-version = "0.2.3"
+version = "0.2.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "h5py", version = "3.14.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.10'" },
@@ -2346,14 +2346,14 @@ dependencies = [
     { name = "streamlit", version = "1.50.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.10'" },
     { name = "streamlit", version = "1.57.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/a5/29/ca3976d9faf0956475f1356560d7e84d5575d98cfc57226fccc30200bbe2/pykes-0.2.3.tar.gz", hash = "sha256:5d6705a5c0548a6a080605779489e5f1a9fa415460b6776dde950137013b7ebb", size = 112367, upload-time = "2026-09-02T20:32:11.604Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/39/e2/84f233f1be84f4c2bdfc2b2505d7a6b1d8075283733f8e552d6b1f935272/pykes-0.2.4.tar.gz", hash = "sha256:c5c4a8a3d2e9a0d4a99b27eb24f9c6e1df4fd8ee5c991d889f284e476c2a90da", size = 113746, upload-time = "2026-09-03T12:38:45.812Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/fe/bd/820a7fcbe477965a6e5d7cfceb9de56a0c84cb39d5e7f5987c89d8148adc/pykes-0.2.3-py3-none-any.whl", hash = "sha256:3811f873b152aeaad63d6ed84388e396e709e495828b3474ba98dbba53fec0d5", size = 128976, upload-time = "2026-09-02T20:32:10.61Z" },
+    { url = "https://files.pythonhosted.org/packages/42/dd/e824410e904f888247bb1cc9267d62744fd3123973ab8f8733e7cedd6b47/pykes-0.2.4-py3-none-any.whl", hash = "sha256:bd537f1e0e984e1e5c43c52e9c494fa316a0153c7c91396cdd5631c31306c479", size = 130702, upload-time = "2026-09-03T12:38:46.812Z" },
 ]
 
 [[package]]
 name = "pykes-well-app"
-version = "0.2.1"
+version = "0.2.2"
 source = { editable = "." }
 dependencies = [
     { name = "numpy", version = "2.0.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.10'" },
@@ -2377,7 +2377,7 @@ dev = [
 requires-dist = [
     { name = "numpy", specifier = ">=1.24.4" },
     { name = "pandas", specifier = ">=2.0.3" },
-    { name = "pykes", specifier = ">=0.2.3" },
+    { name = "pykes", specifier = ">=0.2.4" },
     { name = "scipy", specifier = ">=1.10.1" },
 ]
 

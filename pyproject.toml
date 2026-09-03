@@ -4,7 +4,7 @@ build-backend = "uv_build"
 
 [project]
 name = "pykes_well_app"
-version = "0.2.1"
+version = "0.2.2"
 description = "Python package for well-based experiment analysis."
 authors = [
     {name = "Jacob Schneidewind", email = "pyH2A.pypi@gmail.com"},
@@ -15,7 +15,7 @@ requires-python = ">=3.9"
 dependencies = [
     "numpy>=1.24.4",
     "pandas>=2.0.3",
-    "pykes>=0.2.3",
+    "pykes>=0.2.4",
     "scipy>=1.10.1",
 ]
 
