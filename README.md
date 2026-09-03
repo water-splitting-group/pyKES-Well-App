@@ -63,6 +63,22 @@ uv lock --upgrade-package pykes
 needed). A pin left behind by hand used to make the deployed app fail on import of
 modules added in the meantime.
 
+* Raising floor in [`pyproject.toml`](pyproject.toml), then
+```bash
+uv lock --refresh
+uv sync
+```
+
+## Versioning
+
+* Updating version in [`pyproject.toml`](pyproject.toml)
+```bash
+git tag v0.1.1
+git push origin v0.1.1
+```
+* Creating release from tag in GitHub
+
+
 ## Repository Layout
 
 - [`src/pykes_well_app/data_parsing/`](src/pykes_well_app/data_parsing/) contains the raw readers and signal-processing helpers.
